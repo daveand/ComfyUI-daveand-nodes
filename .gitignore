@@ -1,3 +1,10 @@
+# Custom files
+config.json
+model-config-selector-config.json
+checkpoint-loader-config.json
+base-config.json
+
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[codz]
