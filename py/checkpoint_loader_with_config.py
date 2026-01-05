@@ -3,7 +3,7 @@ import os
 import comfy.sd
 import folder_paths
 
-configPath = f"{os.getcwd()}/custom_nodes/ComfyUI-daveand-utils/config/checkpoint-loader-config.json"
+configPath = f"{os.getcwd()}/custom_nodes/ComfyUI-daveand-nodes/config/checkpoint-loader-config.json"
 
 class CheckpointLoaderWithConfig:
     CATEGORY = "loaders"

@@ -2,7 +2,7 @@ import json
 import os
 from comfy.comfy_types import IO, ComfyNodeABC, InputTypeDict, FileLocator
 
-configPath = f"{os.getcwd()}/custom_nodes/ComfyUI-daveand-utils/config/prompt-constructor-config.json"
+configPath = f"{os.getcwd()}/custom_nodes/ComfyUI-daveand-nodes/config/prompt-constructor-config.json"
 
 class PromptConstructor:
     CATEGORY = "utils"

@@ -2,7 +2,7 @@ import json
 import os
 import inspect
 
-configPath = f"{os.getcwd()}/custom_nodes/ComfyUI-daveand-utils/config/prompt-lighting-selector-config.json"
+configPath = f"{os.getcwd()}/custom_nodes/ComfyUI-daveand-nodes/config/prompt-lighting-selector-config.json"
 
 class PromptLightingSelector:
     CATEGORY = "utils"
