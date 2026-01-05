@@ -1,8 +1,8 @@
-# ComfyUI-daveand-utils
+# ComfyUI-daveand-nodes
 
 ```
 cd custom_nodes
-git clone https://github.com/daveand/ComfyUI-daveand-utils.git
+git clone https://github.com/daveand/ComfyUI-daveand-nodes.git
 ```
 
 ## Nodes
