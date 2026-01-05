@@ -2,13 +2,10 @@ import json
 import os
 from comfy.comfy_types import IO, ComfyNodeABC, InputTypeDict, FileLocator
 
-configPath = f"{os.getcwd()}/custom_nodes/ComfyUI-daveand-nodes/config/prompt-constructor-config.json"
-
 class PromptConstructor:
     CATEGORY = "utils"
     @classmethod    
     def INPUT_TYPES(s):
-        config = get_config()
         return { 
             "required":  {
                 "clip": (IO.CLIP, {"tooltip": "The CLIP model used for encoding the text."}),
@@ -80,21 +77,3 @@ class PromptConstructor:
             return (f"Error: {e}",)
         
 
-def get_config():
-    if not os.path.isfile(configPath):
-        rewrite_json(configSeed)
-        print("Config file not found. Seeded a new one.")
-
-    config = {}
-
-    with open(configPath, 'r') as file:
-        config = json.load(file)
-
-    return config
-
-def rewrite_json(data, filename=configPath):
-    with open(filename, 'w') as file:
-        json.dump(data, file, indent=4)
-
-
-configSeed = {}
