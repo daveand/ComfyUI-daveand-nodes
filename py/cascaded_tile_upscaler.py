@@ -33,6 +33,7 @@ class CascadedTileUpscaler:
                 "megapixels": ("FLOAT", {"default": 4.0, "min": 0.0, "max": 100.0, "step":0.1}),
                 "tile_resolution": ("INT", {"default": 1024, "min": 512, "max": 10000, "step": 64}),
                 "tile_overlap": ("FLOAT", {"default": 0.05, "min": 0.0, "max": 10.0, "step":0.001}),
+                "post_process_enable": ("BOOLEAN", {"default": False}),
                 "desaturate": ("FLOAT", {"default": 0.2, "min": 0.0, "max": 1.0, "step":0.01}),
             },
             "optional": {
@@ -45,11 +46,11 @@ class CascadedTileUpscaler:
     OUTPUT_NODE = True
 
 
-    def upscale(self, config_pipe_enabled, model, vae, seed, steps, cfg, sampler_name, scheduler, positive, negative, image, passes, conditioning_strength, control_net, upscale_method, megapixels, tile_resolution, tile_overlap, denoise=0.5, strength=0.5, denoise_2=0.4, strength_2=0.4, config_pipe_in=None, desaturate=0.2):          
+    def upscale(self, config_pipe_enabled, model, vae, seed, steps, cfg, sampler_name, scheduler, positive, negative, image, passes, conditioning_strength, control_net, upscale_method, megapixels, tile_resolution, tile_overlap, denoise=0.5, strength=0.5, denoise_2=0.4, strength_2=0.4, config_pipe_in=None, post_process_enable=False, desaturate=0.2):          
         model_config = json.loads(config_pipe_in) if config_pipe_in else None
 
         samples = image
-        
+        untiled_image = image
 
         counter = 0
 
@@ -91,8 +92,10 @@ class CascadedTileUpscaler:
             samples = untiled_image
             counter += 1
 
-        if desaturate > 0.0:
-            untiled_image = desaturate_image(untiled_image, desaturate)
+        if post_process_enable:
+            post_processed_image = desaturate_image(untiled_image, desaturate)
+            untiled_image = post_processed_image
+
 
         return (untiled_image, config_pipe_in,)
 
