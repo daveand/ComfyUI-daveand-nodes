@@ -3,3 +3,4 @@ numpy
 colour-science
 scipy
 matplotlib
+colour

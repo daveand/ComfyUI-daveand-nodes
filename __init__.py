@@ -9,6 +9,7 @@ from .py.latent_image_and_seed import LatentImageAndSeed
 from .py.cascaded_tile_upscaler import CascadedTileUpscaler
 from .py.training_dataset_saver import TrainingDatasetSaver
 from .py.batch_resizer import BatchResizer
+from .py.image_crop_and_place import ImageCropAndPlace
 
 NODE_CLASS_MAPPINGS = {
     "PromptConstructor" : PromptConstructor,
@@ -21,4 +22,5 @@ NODE_CLASS_MAPPINGS = {
     "CascadedTileUpscaler" : CascadedTileUpscaler,
     "TrainingDatasetSaver" : TrainingDatasetSaver,
     "BatchResizer" : BatchResizer,
+    "ImageCropAndPlace" : ImageCropAndPlace,
 }
