@@ -1,4 +1,4 @@
-from PIL import Image, ImageFilter
+from PIL import Image, ImageFilter, ImageOps
 from comfy_extras.nodes_dataset import tensor_to_pil
 import torch
 import torchvision.transforms.functional as TF
@@ -23,6 +23,7 @@ class ImageCropAndPlace:
                 "x_adjust": ("INT", {"default": 0, "min": -10000, "max": 10000, "step": 10}),
                 "y_adjust": ("INT", {"default": 0, "min": -10000, "max": 10000, "step": 10}),
                 "rotate_degrees": ("INT", {"default": 0, "min": -360, "max": 360}),
+                "mirror": ("BOOLEAN", {"default": False}),
             }
         }
     RETURN_TYPES = ("IMAGE", "MASK", )
@@ -30,7 +31,7 @@ class ImageCropAndPlace:
     FUNCTION = "crop_and_place"
     OUTPUT_NODE = True
 
-    def crop_and_place(self, dest_image, dest_mask, crop_image, crop_mask, scale_adjust, x_adjust, y_adjust, rotate_degrees):
+    def crop_and_place(self, dest_image, dest_mask, crop_image, crop_mask, scale_adjust, x_adjust, y_adjust, rotate_degrees, mirror):
 
         crop_mask_img = mask_to_image(crop_mask)
 
@@ -48,12 +49,12 @@ class ImageCropAndPlace:
         x_pos = int(x + (w / 2) - (cropped_image.shape[2] / 2)) + x_adjust
         y_pos = int(y + (h / 2) - (cropped_image.shape[1] / 2)) + y_adjust
         
-        placed_image = add_image(dest_image, cropped_image, x_pos, y_pos, rotate, rotate_degrees)
+        placed_image = add_image(dest_image, cropped_image, x_pos, y_pos, rotate, rotate_degrees, mirror)
 
 
         # print(dest_image.shape)
         black_image = torch.zeros(1, dest_image.shape[1], dest_image.shape[2], 3, dtype=torch.uint8)
-        placed_mask_img = add_image(black_image, alpha_mask, x_pos, y_pos, rotate, rotate_degrees)
+        placed_mask_img = add_image(black_image, alpha_mask, x_pos, y_pos, rotate, rotate_degrees, mirror)
 
         placed_mask = image_to_mask(placed_mask_img, "red")
 
@@ -89,7 +90,7 @@ def find_mask_area(mask):
     return x, y, w, h
 
 
-def add_image(base_img, overlay_img, pos_x, pos_y, rotate, rotate_degrees):
+def add_image(base_img, overlay_img, pos_x, pos_y, rotate, rotate_degrees, mirror):
     # Open the base and overlay images
     # base_img = Image.open('background.jpg')
     # overlay_img = Image.open('overlay.png')
@@ -99,6 +100,9 @@ def add_image(base_img, overlay_img, pos_x, pos_y, rotate, rotate_degrees):
 
     # Convert the overlay image to RGBA mode
     overlay_img = overlay_img.convert('RGBA')
+
+    if mirror:
+        overlay_img = ImageOps.mirror(overlay_img)
 
     if rotate:
         overlay_img = overlay_img.rotate(rotate_degrees, expand=True)
