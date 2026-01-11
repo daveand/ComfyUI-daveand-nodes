@@ -1,4 +1,4 @@
-from PIL import Image
+from PIL import Image, ImageFilter
 from comfy_extras.nodes_dataset import tensor_to_pil
 import torch
 import torchvision.transforms.functional as TF
@@ -6,6 +6,7 @@ from torchvision.ops import masks_to_boxes
 import comfy.sample
 import math
 from comfy_extras.nodes_dataset import tensor_to_pil, pil_to_tensor
+
 
 class ImageCropAndPlace:
     CATEGORY = "utils"
@@ -22,8 +23,6 @@ class ImageCropAndPlace:
                 "x_adjust": ("INT", {"default": 0, "min": -10000, "max": 10000, "step": 10}),
                 "y_adjust": ("INT", {"default": 0, "min": -10000, "max": 10000, "step": 10}),
                 "rotate_degrees": ("INT", {"default": 0, "min": -360, "max": 360}),
-                "grow_mask": ("INT", {"default": 10, "min": 0, "max": 10000}),
-                "blur_radius": ("FLOAT", {"default": 10.0, "min": 0.0, "max": 100.0, "step": 0.1 }),
             }
         }
     RETURN_TYPES = ("IMAGE", "MASK", )
@@ -31,7 +30,7 @@ class ImageCropAndPlace:
     FUNCTION = "crop_and_place"
     OUTPUT_NODE = True
 
-    def crop_and_place(self, dest_image, dest_mask, crop_image, crop_mask, scale_adjust, x_adjust, y_adjust, rotate_degrees, grow_mask, blur_radius):
+    def crop_and_place(self, dest_image, dest_mask, crop_image, crop_mask, scale_adjust, x_adjust, y_adjust, rotate_degrees):
 
         crop_mask_img = mask_to_image(crop_mask)
 
@@ -237,36 +236,3 @@ def cut(image, mask):
 
 
     return result, result_mask
-
-
-# def cut(image, mask, force_resize_width, force_resize_height, mask_mapping_optional = None):
-
-#     # We operate on RGBA to keep the code clean and then convert back after
-#     image = tensor2rgba(image)
-#     mask = tensor2mask(mask)
-
-
-#     B, H, W, _ = image.shape
-    
-#     MB, _, _ = mask.shape
-
-#     # masks_to_boxes errors if the tensor is all zeros, so we'll add a single pixel and zero it out at the end
-#     is_empty = ~torch.gt(torch.max(torch.reshape(mask,[MB, H * W]), dim=1).values, 0.)
-#     mask[is_empty,0,0] = 1.
-#     boxes = masks_to_boxes(mask)
-#     mask[is_empty,0,0] = 0.
-
-#     min_x = boxes[:,0]
-#     min_y = boxes[:,1]
-#     max_x = boxes[:,2]
-#     max_y = boxes[:,3]
-
-#     use_width = 853
-#     use_height = 1280
-
-#     alpha_mask = torch.ones((B, H, W, 4))
-#     alpha_mask[:,:,:,3] = mask
-
-#     image = image * alpha_mask
-
-#     return image
