@@ -10,6 +10,8 @@ from .py.cascaded_tile_upscaler import CascadedTileUpscaler
 from .py.training_dataset_saver import TrainingDatasetSaver
 from .py.batch_resizer import BatchResizer
 from .py.image_crop_and_place import ImageCropAndPlace
+from .py.tiled_ksampler import TiledKSampler
+from .py.tiled_ksampler_upscaler import TiledKSamplerWithUpscaler
 
 NODE_CLASS_MAPPINGS = {
     "PromptConstructor" : PromptConstructor,
@@ -23,4 +25,6 @@ NODE_CLASS_MAPPINGS = {
     "TrainingDatasetSaver" : TrainingDatasetSaver,
     "BatchResizer" : BatchResizer,
     "ImageCropAndPlace" : ImageCropAndPlace,
+    "TiledKSampler" : TiledKSampler,
+    "TiledKSamplerWithUpscaler" : TiledKSamplerWithUpscaler,
 }
