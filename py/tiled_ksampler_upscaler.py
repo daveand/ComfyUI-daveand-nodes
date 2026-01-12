@@ -83,8 +83,10 @@ class TiledKSamplerWithUpscaler:
 
 
         if post_process_enable:
-            untiled_image = desaturate_image(untiled_image, desaturate)
-            untiled_image = sharpen_image(untiled_image, sharpen)
+            if desaturate > 0.0:
+                untiled_image = desaturate_image(untiled_image, desaturate)
+            if sharpen > 0.0:
+                untiled_image = sharpen_image(untiled_image, sharpen)
 
         return (untiled_image, config_pipe_in,)
 
