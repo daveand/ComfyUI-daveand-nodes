@@ -12,6 +12,7 @@ from .py.batch_resizer import BatchResizer
 from .py.image_crop_and_place import ImageCropAndPlace
 from .py.tiled_ksampler import TiledKSampler
 from .py.tiled_ksampler_upscaler import TiledKSamplerWithUpscaler
+from .py.test1 import Test1
 
 NODE_CLASS_MAPPINGS = {
     "PromptConstructor" : PromptConstructor,
@@ -27,4 +28,8 @@ NODE_CLASS_MAPPINGS = {
     "ImageCropAndPlace" : ImageCropAndPlace,
     "TiledKSampler" : TiledKSampler,
     "TiledKSamplerWithUpscaler" : TiledKSamplerWithUpscaler,
+    "Test1" : Test1,
 }
+
+WEB_DIRECTORY = "./js"
+__all__ = ["NODE_CLASS_MAPPINGS", "NODE_DISPLAY_NAME_MAPPINGS", "WEB_DIRECTORY"]
